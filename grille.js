@@ -9,7 +9,7 @@ const taille = 10;
 const quantite = {
     survivant: 3,
     robot: 5,
-    arbre: 6,
+    arbre: 2,
     foyer: 7,
 };
 
@@ -147,8 +147,87 @@ function propagationDuFeu() {
   
   //----------------------------------------------------------------------------------------------------------------------
   
+  function deplacementRobot(){
+
+  }
+
+
+  function deplacementSurvivant() {
+    let morts = 0; // Compteur pour les survivants morts
+    let nouvelleGrille = grille.map(ligne => ligne.slice());
+  
+    // Parcourir la grille pour trouver les survivants
+    for (let y = 0; y < taille; y++) {
+      for (let x = 0; x < taille; x++) {
+        if (grille[y][x] === 4) { // Si c'est un survivant
+          let compteurFoyers = 0;
+  
+          // Compter les foyers adjacents au survivant
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              let nx = x + dx;
+              let ny = y + dy;
+  
+              // Vérifier si la position est valide (dans les limites de la grille)
+              if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
+                // Si l'élément adjacent est un foyer (1)
+                if (grille[ny][nx] === 1) {
+                  compteurFoyers++;
+                }
+              }
+            }
+          }
+  
+          // Si le survivant est entouré par 3 foyers ou plus
+          if (compteurFoyers >= 3) {
+            let deplace = false; // Flag pour savoir si le survivant peut se déplacer
+  
+            // Vérifier les cases adjacentes pour voir si un survivant peut se déplacer
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                let nx = x + dx;
+                let ny = y + dy;
+  
+                // Vérifier si la position est valide (dans les limites de la grille)
+                if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
+                  // Si la case est vide, déplacer le survivant
+                  if (grille[ny][nx] === 0) {
+                    nouvelleGrille[ny][nx] = 4; // Déplacer le survivant vers cette case
+                    nouvelleGrille[y][x] = 0; // Libérer la case actuelle du survivant
+                    deplace = true;
+                    break;
+                  }
+                }
+              }
+              if (deplace) break;
+            }
+  
+            // Si le survivant ne peut pas se déplacer, il brûle
+            if (!deplace) {
+              nouvelleGrille[y][x] = 1; // Marquer le survivant comme mort (ou vide)
+              morts++; // Incrémenter le compteur de morts
+            }
+          }
+        }
+      }
+    }
+  
+    // Mettre à jour la grille
+    grille = nouvelleGrille;
+  
+    // Afficher les morts
+    console.log("Nombre de survivants morts:", morts);
+  
+    // Redessiner la grille après les déplacements
+    dessinerGrille();
+  }
+  
+  
+
+  //----------------------------------------------------------------------------------------------------------------------
   // Fonction de gestion du bouton T+1
   function tourSuivant() {
+    deplacementSurvivant();
     // Propager le feu à chaque tour
     propagationDuFeu();
   }
