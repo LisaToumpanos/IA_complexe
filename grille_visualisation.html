@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulation robots</title>
+  <style>
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0; /* Fond clair */
+      }
+
+    #grille {
+      display: grid;
+      grid-template-columns: repeat(10, 40px);
+      grid-template-rows: repeat(10, 40px);
+      gap: 1px;  /* Espacement entre les cellules */
+      margin: 50px auto; /* Centrer la grille avec un espace en haut */
+      width: fit-content;
+      background-color: white;
+    }
+    .cellule {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 12px;
+      border: 1px solid black;
+      background-size: cover; /* Pour que l'image couvre toute la cellule */
+      background-position: center; /* Centrer l'image */
+    }
+    .vide { background-color: white; }
+    .foyer { background-image: url("foyer.jpg"); }
+    .robot { background-image: url("robot.jpg"); }
+    .arbre { background-image: url("arbre.jpg"); }
+    .survivant { background-image: url("survivant.jpg"); }
+  </style>
+</head>
+<body>
+  <h1>Système d'exploration autonome</h1>
+  <div id="grille" text-align: center;></div>
+  <script src="grille.js"></script>
+</body>
+</html>
