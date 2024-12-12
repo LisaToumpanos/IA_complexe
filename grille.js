@@ -7,10 +7,10 @@ const etats = ['vide', 'foyer', 'robot', 'arbre', 'survivant', 'base']; // la ba
 const taille = 10;
  
 const quantite = {
-    survivant: 3,
-    robot: 3,
-    arbre: 10,
-    foyer: 10,
+    survivant: 5,
+    robot: 0,
+    arbre: 5,
+    foyer: 11,
 };
 
 let personnesSauvées = 0;
@@ -166,7 +166,8 @@ function propagationDuFeu() {
 
   function deplacementSurvivant() {
     let nouvelleGrille = grille.map(ligne => ligne.slice()); // Créer une copie de la grille pour éviter des conflits de modification
-  
+    let casesOccupees = []; // Tableau pour suivre les cases déjà occupées par un survivant
+
     // Parcourir la grille pour trouver les survivants
     for (let y = 0; y < taille; y++) {
       for (let x = 0; x < taille; x++) {
@@ -189,7 +190,7 @@ function propagationDuFeu() {
                 // Vérifier si la position est valide (dans les limites de la grille)
                 if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
                   // Si la case est vide (pas d'obstacle ou survivant), ajouter la case à la liste des possibilités
-                  if (grille[ny][nx] === 0) {
+                  if (grille[ny][nx] === 0 && !casesOccupees.some(caseOccupee => caseOccupee.x === nx && caseOccupee.y === ny)) {
                     let distBase = Infinity;
   
                     // Calculer la distance minimale à la base parmi toutes les bases
@@ -211,12 +212,15 @@ function propagationDuFeu() {
               meilleuresCases.sort((a, b) => a.distBase - b.distBase);
               let caseChoisie = meilleuresCases[0];
   
-              // Vérifier si la case choisie est libre avant de déplacer le survivant
-              if (grille[caseChoisie.y][caseChoisie.x] === 0) {
-                // Déplacer le survivant vers la case choisie
+              // Déplacer le survivant vers la case choisie, si elle est libre et non occupée par un autre survivant
+              if (grille[caseChoisie.y][caseChoisie.x] === 0 && !casesOccupees.some(caseOccupee => caseOccupee.x === caseChoisie.x && caseOccupee.y === caseChoisie.y)) {
+                // Déplacer le survivant vers cette case
                 nouvelleGrille[caseChoisie.y][caseChoisie.x] = 4; // Déplacer le survivant vers cette case
                 nouvelleGrille[y][x] = 0; // Libérer la case actuelle du survivant
                 deplace = true;
+
+                // Ajouter cette case aux cases occupées
+                casesOccupees.push({ x: caseChoisie.x, y: caseChoisie.y });
               }
             }
   
@@ -236,7 +240,8 @@ function propagationDuFeu() {
   
     // Redessiner la grille après les déplacements
     dessinerGrille();
-  }  
+}
+
   
   function actionRobot(){
 
