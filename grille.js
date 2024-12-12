@@ -13,6 +13,8 @@ const quantite = {
     foyer: 7,
 };
 
+//-------------------------------------------------------------------------------------------------------------------
+
 // Initialiser la grille
 let grille = Array.from({ length: taille }, () =>  Array(taille).fill(0));
 
@@ -23,6 +25,8 @@ for (let y = 0; y < taille; y++) {
     positions.push([x, y]);
   }
 }
+
+//--------------------------------------------------------------------------------------------------------------------
 
 // Définir la base fixe
 const basePositions = [
@@ -55,6 +59,8 @@ for (let [etat, quantites] of Object.entries(quantite)) {
   }
 }
 
+//-------------------------------------------------------------------------------------------------------------------
+
 // Créer la grille visuelle
 function dessinerGrille() {
   grilleElement.innerHTML = ''; // Réinitialiser l'affichage
@@ -73,7 +79,7 @@ function dessinerGrille() {
 // Dessiner la grille initiale
 dessinerGrille();
 
-
+//---------------------------------------------------------------------------------------------------------------------
 
 function propagationDuFeu() {
     // Créer une copie de la grille pour éviter de modifier la grille en cours pendant le calcul
@@ -139,10 +145,10 @@ function propagationDuFeu() {
     dessinerGrille();
   }
   
+  //----------------------------------------------------------------------------------------------------------------------
   
   // Fonction de gestion du bouton T+1
   function tourSuivant() {
     // Propager le feu à chaque tour
     propagationDuFeu();
   }
-  
