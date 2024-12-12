@@ -9,8 +9,8 @@ const taille = 10;
 const quantite = {
     survivant: 3,
     robot: 3,
-    arbre: 5,
-    foyer: 7,
+    arbre: 10,
+    foyer: 10,
 };
 
 let personnesSauvées = 0;
@@ -171,30 +171,12 @@ function propagationDuFeu() {
     for (let y = 0; y < taille; y++) {
       for (let x = 0; x < taille; x++) {
         if (grille[y][x] === 4) { // Si c'est un survivant
-          let compteurFoyers = 0;
-  
-          // Compter les foyers adjacents au survivant
-          for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-              let nx = x + dx;
-              let ny = y + dy;
-  
-              // Vérifier si la position est valide (dans les limites de la grille)
-              if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
-                // Si l'élément adjacent est un foyer (1)
-                if (grille[ny][nx] === 1) {
-                  compteurFoyers++;
-                }
-              }
-            }
-          }
-  
           // Si le survivant est adjacent à la base, il va dans la base et disparaît
           if (estAdjacentBase(x, y)) {
             nouvelleGrille[y][x] = 0; // Libérer la case actuelle du survivant
             personnesSauvées++; // Incrémenter le nombre de personnes sauvées
             console.log("Personne sauvée ! Total:", personnesSauvées); // Afficher dans la console
-          } else if (compteurFoyers >= 2) {
+          } else {
             let deplace = false; // Flag pour savoir si le survivant peut se déplacer
   
             // Calculer les cases adjacentes possibles pour se déplacer
@@ -254,9 +236,7 @@ function propagationDuFeu() {
   
     // Redessiner la grille après les déplacements
     dessinerGrille();
-  }
-  
-  
+  }  
   
   function actionRobot(){
 

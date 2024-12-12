@@ -24,7 +24,7 @@ Si un foyer (zi = 1) est adjacent à un arbre (zi = 3), cet arbre s’enflamme (
 Si une case est entourée par au moins 3 foyers à un instant t, cette case devient un foyer au tour t+1. Cela inclut les cases vides. (si=0 à t devient zi=1 à t+1)
 
 6) Mouvement du survivant :
-Un survivant peut se déplacer d'une case s'il a 2 foyers ou plus autour de lui 
+Un survivant se déplace d'une case autour de lui en direction de la base
 
 
 Tour de simulation :
@@ -35,7 +35,7 @@ Les arbres adjacents aux foyers s’enflamment.
 Les cases entourées par 3 foyers ou plus s’enflamment.
 
 Déplacement des survivants :
-Les survivants concernés se déplacent vers une case vide proche.
+Les survivants se déplacent vers une case vide plus proche de la base.
 
 Actions des robots :
 S'il a un foyer à proximité, il l'éteint
@@ -54,7 +54,6 @@ Les cases vides s’enflamment si elles sont entourées par au moins 3 foyers.
 
 Déplacement des survivants :
 Les survivants tentent de se rapprocher de la base coûte que coûte !
-Les survivants évitent de brûler en se déplaçant vers une case adjacente vide s'il y a deux foyers ou plus à proximité.
 Si aucune case vide n’est disponible, le survivant reste sur place et meurt. --> le but des robots est de permettre que tous les survivants soient sauvés !
 
 
