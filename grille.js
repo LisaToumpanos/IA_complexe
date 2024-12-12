@@ -1,18 +1,19 @@
 const grilleElement = document.getElementById('grille');
 
-// États possibles :0 = vide, 1 = foyer, 2 = robot, 3 = arbre, 4 = survivant, 5 = base
-const etats = ['vide', 'foyer', 'robot', 'arbre', 'survivant', 'base'];
+// États possibles :0 = vide, 1 = foyer, 2 = robot, 3 = arbre, 4 = survivant, 5 = base, 6 = robot ayant pris en charge un survivant 
+const etats = ['vide', 'foyer', 'robot', 'arbre', 'survivant', 'base', 'robotSauveteur']; // la base ne peut pas brûler
 
 // Dimensions de la grille
 const taille = 10;
  
 const quantite = {
     survivant: 3,
-    robot: 5,
-    arbre: 2,
+    robot: 3,
+    arbre: 5,
     foyer: 7,
 };
 
+let personnesSauvées = 0;
 //-------------------------------------------------------------------------------------------------------------------
 
 // Initialiser la grille
@@ -138,23 +139,33 @@ function propagationDuFeu() {
       }
     }
   
-    // Mettre à jour la grille avec les foyers propagés et explosés
+    // Mettre à jour la grille avec les foyers propagés sur les arbres et par explosion
     grille = nouvelleGrille;
   
-    // Redessiner la grille après la propagation du feu et l'explosion
+    // Redessiner la grille
     dessinerGrille();
   }
   
   //----------------------------------------------------------------------------------------------------------------------
+  let morts = 0;  // Initialiser le compteur des morts
+  function estAdjacentBase(x, y) {
+    // Vérifie si la case est adjacente à la base
+    for (let i = 0; i < basePositions.length; i++) {
+      let [bx, by] = basePositions[i];
+      if (Math.abs(bx - x) <= 1 && Math.abs(by - y) <= 1) {
+        return true;
+      }
+    }
+    return false;
+  }
   
-  function deplacementRobot(){
-
+  function distanceEuclidienne(x1, y1, x2, y2) {
+    // Calcule la distance Euclidienne entre deux points (x1, y1) et (x2, y2)
+    return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
   }
 
-
   function deplacementSurvivant() {
-    let morts = 0; // Compteur pour les survivants morts
-    let nouvelleGrille = grille.map(ligne => ligne.slice());
+    let nouvelleGrille = grille.map(ligne => ligne.slice()); // Créer une copie de la grille pour éviter des conflits de modification
   
     // Parcourir la grille pour trouver les survivants
     for (let y = 0; y < taille; y++) {
@@ -178,11 +189,16 @@ function propagationDuFeu() {
             }
           }
   
-          // Si le survivant est entouré par 3 foyers ou plus
-          if (compteurFoyers >= 3) {
+          // Si le survivant est adjacent à la base, il va dans la base et disparaît
+          if (estAdjacentBase(x, y)) {
+            nouvelleGrille[y][x] = 0; // Libérer la case actuelle du survivant
+            personnesSauvées++; // Incrémenter le nombre de personnes sauvées
+            console.log("Personne sauvée ! Total:", personnesSauvées); // Afficher dans la console
+          } else if (compteurFoyers >= 2) {
             let deplace = false; // Flag pour savoir si le survivant peut se déplacer
   
-            // Vérifier les cases adjacentes pour voir si un survivant peut se déplacer
+            // Calculer les cases adjacentes possibles pour se déplacer
+            let meilleuresCases = [];
             for (let dy = -1; dy <= 1; dy++) {
               for (let dx = -1; dx <= 1; dx++) {
                 let nx = x + dx;
@@ -190,22 +206,43 @@ function propagationDuFeu() {
   
                 // Vérifier si la position est valide (dans les limites de la grille)
                 if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
-                  // Si la case est vide, déplacer le survivant
+                  // Si la case est vide (pas d'obstacle ou survivant), ajouter la case à la liste des possibilités
                   if (grille[ny][nx] === 0) {
-                    nouvelleGrille[ny][nx] = 4; // Déplacer le survivant vers cette case
-                    nouvelleGrille[y][x] = 0; // Libérer la case actuelle du survivant
-                    deplace = true;
-                    break;
+                    let distBase = Infinity;
+  
+                    // Calculer la distance minimale à la base parmi toutes les bases
+                    for (let i = 0; i < basePositions.length; i++) {
+                      let [bx, by] = basePositions[i];
+                      distBase = Math.min(distBase, distanceEuclidienne(nx, ny, bx, by));
+                    }
+  
+                    // Ajouter la case avec sa distance à la base
+                    meilleuresCases.push({ x: nx, y: ny, distBase });
                   }
                 }
               }
-              if (deplace) break;
+            }
+  
+            // Si des cases possibles ont été trouvées, déplacer vers la plus proche de la base
+            if (meilleuresCases.length > 0) {
+              // Trier les cases possibles par distance à la base
+              meilleuresCases.sort((a, b) => a.distBase - b.distBase);
+              let caseChoisie = meilleuresCases[0];
+  
+              // Vérifier si la case choisie est libre avant de déplacer le survivant
+              if (grille[caseChoisie.y][caseChoisie.x] === 0) {
+                // Déplacer le survivant vers la case choisie
+                nouvelleGrille[caseChoisie.y][caseChoisie.x] = 4; // Déplacer le survivant vers cette case
+                nouvelleGrille[y][x] = 0; // Libérer la case actuelle du survivant
+                deplace = true;
+              }
             }
   
             // Si le survivant ne peut pas se déplacer, il brûle
             if (!deplace) {
               nouvelleGrille[y][x] = 1; // Marquer le survivant comme mort (ou vide)
-              morts++; // Incrémenter le compteur de morts
+              morts++; // Incrémenter le nombre de morts
+              console.log("Nombre de morts:", morts); // Afficher dans la console
             }
           }
         }
@@ -215,19 +252,21 @@ function propagationDuFeu() {
     // Mettre à jour la grille
     grille = nouvelleGrille;
   
-    // Afficher les morts
-    console.log("Nombre de survivants morts:", morts);
-  
     // Redessiner la grille après les déplacements
     dessinerGrille();
   }
   
   
+  
+  function actionRobot(){
+
+  }
 
   //----------------------------------------------------------------------------------------------------------------------
   // Fonction de gestion du bouton T+1
   function tourSuivant() {
     deplacementSurvivant();
+    actionRobot();
     // Propager le feu à chaque tour
     propagationDuFeu();
   }

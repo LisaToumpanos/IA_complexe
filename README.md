@@ -28,8 +28,6 @@ Si une case est entourée par au moins 3 foyers à un instant t, cette case devi
 Si un survivant est sur une case qui s’enflammera au tour suivant, il se déplace vers une case adjacente vide pour ne pas brûler.
 
 
-Dynamique globale
-
 Tour de simulation :
 À chaque tour, les étapes suivantes se produisent dans l’ordre :
 
@@ -49,11 +47,9 @@ Récupération des survivants :
 Si un robot est adjacent à un survivant, il le prend en charge.
 
 
-Modèle conceptuel
-
 Priorités du robot :
 Chaque robot suit un ordre de priorité :
-Transporter un survivant à la base (si en cours de transport).
+Transporter un survivant à la base (si en cours de transport). si un robot transportant un survivant est coincé par les flammes, il doit attendre qu'un autre robot lui débloque un chemin
 Éteindre un foyer si 3 foyers ou plus sont présents dans le voisinage.
 Se déplacer vers la cible la plus proche :
 Un survivant non pris en charge.
@@ -64,5 +60,6 @@ Les arbres s’enflamment en priorité s’ils sont adjacents à un foyer.
 Les cases vides s’enflamment si elles sont entourées par au moins 3 foyers.
 
 Déplacement des survivants :
-Les survivants évitent de brûler en se déplaçant vers une case adjacente vide.
+Les survivants tentent de se rapprocher de la base coûte que coûte !
+Les survivants évitent de brûler en se déplaçant vers une case adjacente vide s'il y a deux foyers ou plus à proximité.
 Si aucune case vide n’est disponible, le survivant reste sur place et meurt. --> le but des robots est de sauver tous les survivants
