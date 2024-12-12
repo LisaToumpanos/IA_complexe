@@ -1,7 +1,7 @@
 const grilleElement = document.getElementById('grille');
 
-// États possibles :0 = vide, 1 = foyer, 2 = robot, 3 = arbre, 4 = survivant, 5 = base, 6 = robot ayant pris en charge un survivant 
-const etats = ['vide', 'foyer', 'robot', 'arbre', 'survivant', 'base', 'robotSauveteur']; // la base ne peut pas brûler
+// États possibles :0 = vide, 1 = foyer, 2 = robot, 3 = arbre, 4 = survivant, 5 = base
+const etats = ['vide', 'foyer', 'robot', 'arbre', 'survivant', 'base']; // la base ne peut pas brûler
 
 // Dimensions de la grille
 const taille = 10;
