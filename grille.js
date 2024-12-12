@@ -8,7 +8,7 @@ const taille = 10;
  
 const quantite = {
     survivant: 5,
-    robot: 0,
+    robot: 5,
     arbre: 5,
     foyer: 11,
 };
@@ -160,7 +160,7 @@ function propagationDuFeu() {
   }
   
   function distanceEuclidienne(x1, y1, x2, y2) {
-    // Calcule la distance Euclidienne entre deux points (x1, y1) et (x2, y2)
+    // Calcule la distance Euclidienne entre deux points (x1, y1) et (x2, y2) ici un survivant et la base
     return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
   }
 
@@ -178,10 +178,10 @@ function propagationDuFeu() {
             personnesSauvées++; // Incrémenter le nombre de personnes sauvées
             console.log("Personne sauvée ! Total:", personnesSauvées); // Afficher dans la console
           } else {
-            let deplace = false; // Flag pour savoir si le survivant peut se déplacer
+            let deplace = false; // le survivant ne sera pas dans la base après son déplacement
   
             // Calculer les cases adjacentes possibles pour se déplacer
-            let meilleuresCases = [];
+            let deplacementValide = [];
             for (let dy = -1; dy <= 1; dy++) {
               for (let dx = -1; dx <= 1; dx++) {
                 let nx = x + dx;
@@ -189,7 +189,7 @@ function propagationDuFeu() {
   
                 // Vérifier si la position est valide (dans les limites de la grille)
                 if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
-                  // Si la case est vide (pas d'obstacle ou survivant), ajouter la case à la liste des possibilités
+                  // Si la case est vide (pas d'obstacle ou survivant ou robot), ajouter la case à la liste des possibilités
                   if (grille[ny][nx] === 0 && !casesOccupees.some(caseOccupee => caseOccupee.x === nx && caseOccupee.y === ny)) {
                     let distBase = Infinity;
   
@@ -200,17 +200,17 @@ function propagationDuFeu() {
                     }
   
                     // Ajouter la case avec sa distance à la base
-                    meilleuresCases.push({ x: nx, y: ny, distBase });
+                    deplacementValide.push({ x: nx, y: ny, distBase });
                   }
                 }
               }
             }
   
             // Si des cases possibles ont été trouvées, déplacer vers la plus proche de la base
-            if (meilleuresCases.length > 0) {
+            if (deplacementValide.length > 0) {
               // Trier les cases possibles par distance à la base
-              meilleuresCases.sort((a, b) => a.distBase - b.distBase);
-              let caseChoisie = meilleuresCases[0];
+              deplacementValide.sort((a, b) => a.distBase - b.distBase);
+              let caseChoisie = deplacementValide[0]; //la case choisie sera celle dont la distance à la base est la plus petite
   
               // Déplacer le survivant vers la case choisie, si elle est libre et non occupée par un autre survivant
               if (grille[caseChoisie.y][caseChoisie.x] === 0 && !casesOccupees.some(caseOccupee => caseOccupee.x === caseChoisie.x && caseOccupee.y === caseChoisie.y)) {
