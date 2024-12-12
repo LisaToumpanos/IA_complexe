@@ -7,10 +7,24 @@
   <style>
 
     body {
-        margin: 0;
-        padding: 0;
-        background-color: #f0f0f0; /* Fond clair */
-      }
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0; /* Fond clair */
+    }
+
+    /* Style du bouton */
+    button {
+      text-align: center;
+      font-size: 18px; /* Taille du texte */
+      padding: 15px 30px; /* Espacement autour du texte */
+      background-color: grey; /* Couleur de fond */
+      color: white; /* Couleur du texte */
+      border: none; /* Enlever la bordure par défaut */
+      border-radius: 5px; /* Coins arrondis */
+      cursor: pointer; /* Curseur en forme de main */ 
+      display: block;           /* Faire du bouton un bloc */
+      margin: 0 auto;           /* Centrer le bouton horizontalement */   
+    }
 
     #grille {
       display: grid;
@@ -36,11 +50,13 @@
     .robot { background-image: url("robot.jpg"); }
     .arbre { background-image: url("arbre.jpg"); }
     .survivant { background-image: url("survivant.jpg"); }
+    .base {background-color: rgb(0,240,100);}
   </style>
 </head>
 <body>
   <h1>Système d'exploration autonome</h1>
   <div id="grille" text-align: center;></div>
+  <button id="button" onclick="tourSuivant()">T+1</button>
   <script src="grille.js"></script>
 </body>
 </html>
