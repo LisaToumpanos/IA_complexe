@@ -269,7 +269,7 @@ function actionRobot() {
           let ny = y + dir.dy;
 
           if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
-            if (grille[ny][nx] === 1) { // Si un foyer est trouvé
+            if (grille[ny][nx] === 1 && nouvelleGrille[ny][nx] !==0) { // Si un foyer est trouvé et non déjà éteint
               nouvelleGrille[ny][nx] = 0; // Éteindre le foyer
               foyerEteint = true;
               console.log("foyer éteint");
@@ -286,7 +286,7 @@ function actionRobot() {
           // Trouver le foyer le plus proche
           for (let fy = 0; fy < taille; fy++) {
             for (let fx = 0; fx < taille; fx++) {
-              if (grille[fy][fx] === 1) {
+              if (grille[fy][fx] === 1 && nouvelleGrille[fy][fx] !== 0) { //vérifier que le foyer n'est pas déjà éteint
                 let distance = Math.abs(fx - x) + Math.abs(fy - y); // Distance de Manhattan
                 if (distance < distanceMin) {
                   distanceMin = distance;
