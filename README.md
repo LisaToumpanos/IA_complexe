@@ -8,19 +8,19 @@ zi=2, robot
 zi=3, arbre
 zi=4, survivant
 
-1) Extinction d’un foyer :
+Extinction d’un foyer :
 Si un robot a au moins 1 foyers dans son voisinage immédiat (cases adjacentes), il peut l'éteindre. Il commence par vérifier à gauche, puis en haut, puis à droite, puis en bas.
 
-2) Déplacement du robot :
+Déplacement du robot :
 S'il ne trouve pas de foyer autour de lui, le robot se déplace d’une case par tour selon une logique déterminée (vers un foyer).
 
-3) Propagation du feu :
+Propagation du feu :
 Si un foyer (zi = 1) est adjacent à un arbre (zi = 3), cet arbre s’enflamme (zi = 1) au tour suivant.
 
-4) Explosion de feu :
+Explosion de feu :
 Si une case est entourée par au moins 3 foyers à un instant t, cette case devient un foyer au tour t+1. Cela inclut les cases vides. (si=0 à t devient zi=1 à t+1)
 
-5) Mouvement du survivant :
+Mouvement du survivant :
 Un survivant se déplace d'une case autour de lui en direction de la base
 
 
@@ -52,4 +52,4 @@ Déplacement des survivants :
 Les survivants tentent de se rapprocher de la base coûte que coûte !
 Si aucune case vide n’est disponible, le survivant reste sur place et meurt. --> le but des robots est de permettre que tous les survivants soient sauvés !
 
-
+Lorsqu'il ne reste plus aucun survivant sur le plateau de jeu, un popup "Partie terminée, bravo !" s'affiche et le résultat apparaît dans la console.
