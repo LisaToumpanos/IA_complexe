@@ -353,8 +353,6 @@ function finDeJeu() {
 //----------------------------------------------------------------------------------------------------------------------
 // Fonction de gestion du bouton T+1
 function tourSuivant() {
-
-
   //1) Les survivants essaient de s'échapper
   deplacementSurvivant();
   if (finDeJeu()) return; // Arrêter si le jeu est terminé
