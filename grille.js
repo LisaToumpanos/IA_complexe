@@ -255,8 +255,6 @@ function actionRobot() {
     { dx: 1, dy: -1 },   // diagonale haut droit
     { dx: 1, dy: 1 },   // diagonale bas droit
     { dx: -1, dy: 1 },   // diagonale bas gauche
-
-
   ];
 
   // Parcourir la grille pour chaque robot
@@ -353,13 +351,12 @@ function finDeJeu() {
 //----------------------------------------------------------------------------------------------------------------------
 // Fonction de gestion du bouton T+1
 function tourSuivant() {
-  //1) Les survivants essaient de s'échapper
-  deplacementSurvivant();
+  //1) propager le feu à chaque tour
+  propagationDuFeu();
   if (finDeJeu()) return; // Arrêter si le jeu est terminé
   setTimeout(() => {
-    //2) propager le feu à chaque tour
-    propagationDuFeu();
-
+    //2) Les survivants essaient de s'échapper
+    deplacementSurvivant();
     if (finDeJeu()) return; // Arrêter si le jeu est terminé
     setTimeout(() => {
       //3) les robots éteignent les feux les plus proches selon la logique ou se déplacent
