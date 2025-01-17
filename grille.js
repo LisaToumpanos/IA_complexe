@@ -326,6 +326,7 @@ function actionRobot() {
 }
 
 
+
 function finDeJeu() {
   // vérifier s'il reste des survivants 
   let survivantsRestants = 0;
@@ -339,7 +340,7 @@ function finDeJeu() {
   if (survivantsRestants === 0) {
     // il y a eu des morts
     if (morts !== 0) {
-      console.log("Vous n'avez pas sauvé tout le monde, il y a eu " + morts + "morts!");
+      console.log("Vous n'avez pas sauvé tout le monde, il y a eu " + morts + " mort(s)!");
     } else { // tout le monde a été sauvé
       console.log("Bravo ! Tout le monde a été sauvé !")
     }
@@ -353,16 +354,18 @@ function finDeJeu() {
 // Fonction de gestion du bouton T+1
 function tourSuivant() {
 
-  //1) propager le feu à chaque tour
-  propagationDuFeu();
+
+  //1) Les survivants essaient de s'échapper
+  deplacementSurvivant();
   if (finDeJeu()) return; // Arrêter si le jeu est terminé
   setTimeout(() => {
-    //2) les robots éteignent les feux les plus proches selon la logique ou se déplacent
-    actionRobot();
+    //2) propager le feu à chaque tour
+    propagationDuFeu();
+
     if (finDeJeu()) return; // Arrêter si le jeu est terminé
     setTimeout(() => {
-      //3) Les survivants essaient de s'échapper
-      deplacementSurvivant();
+      //3) les robots éteignent les feux les plus proches selon la logique ou se déplacent
+      actionRobot();
       if (finDeJeu()) return; // Arrêter si le jeu est terminé
     }, 2000); // délai de 2 secs
   }, 2000);
