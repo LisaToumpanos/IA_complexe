@@ -1,55 +1,67 @@
-# IA_complexe
+# IA_complexe – Système d’Exploration Autonome 🔥🤖
 
-Règles et leur interprétation : 
+## Description
+Simulation sur grille dans laquelle des robots autonomes éteignent des foyers d’incendie afin de permettre à des survivants d’atteindre une base en sécurité.
 
-zi=0, case vide
-zi=1, foyer
-zi=2, robot
-zi=3, arbre
-zi=4, survivant
+---
 
-Extinction d’un foyer :
-Si un robot a au moins 1 foyers dans son voisinage immédiat (cases adjacentes), il peut l'éteindre. Il commence par vérifier à gauche, puis en haut, puis à droite, puis en bas.
+## Objectif
+Sauver tous les survivants avant qu’ils ne soient bloqués ou brûlés par la propagation du feu.
 
-Déplacement du robot :
-S'il ne trouve pas de foyer autour de lui, le robot se déplace d’une case par tour selon une logique déterminée (vers un foyer).
+---
 
-Propagation du feu :
-Si un foyer (zi = 1) est adjacent à un arbre (zi = 3), cet arbre s’enflamme (zi = 1) au tour suivant.
+## Représentation de la grille
 
-Explosion de feu :
-Si une case est entourée par au moins 3 foyers à un instant t, cette case devient un foyer au tour t+1. Cela inclut les cases vides. (si=0 à t devient zi=1 à t+1)
+zi = 0 : case vide  
+zi = 1 : foyer (feu)  
+zi = 2 : base  
+zi = 3 : robot  
+zi = 4 : arbre  
+zi = 5 : survivant  
 
-Mouvement du survivant :
-Un survivant se déplace d'une case autour de lui en direction de la base
+---
 
+## Règles du feu
+- Un arbre adjacent à un foyer s’enflamme au tour suivant
+- Une case entourée par au moins 3 foyers devient un foyer
 
-Tour de simulation :
-À chaque tour, les étapes suivantes se produisent dans l’ordre :
+---
 
-Propagation du feu :
-Les arbres adjacents aux foyers s’enflamment.
-Les cases entourées par 3 foyers ou plus s’enflamment.
+## Règles des robots
+- Un robot éteint un foyer adjacent (priorité gauche, haut, droite, bas)
+- Sinon, il se déplace vers le foyer le plus proche
 
-Déplacement des survivants :
-Les survivants se déplacent vers une case vide plus proche de la base.
+---
 
-Actions des robots :
-S'il a un foyer à proximité, il l'éteint
-S’il n’éteint pas de feu, il se déplace vers le foyer le plus proche.
+## Règles des survivants
+- Un survivant se déplace vers la base
+- S’il ne peut pas se déplacer, il meurt
 
+---
 
+## Déroulement d’un tour
+1. Propagation du feu
+2. Déplacement des survivants
+3. Actions des robots
 
-Priorités du robot :
-Chaque robot suit un ordre de priorité :
-Éteindre le foyer le plus proche pour permettre aux survivants de rejoindre la base
+---
 
-Propagation du feu :
-Les arbres s’enflamment en priorité s’ils sont adjacents à un foyer.
-Les cases vides s’enflamment si elles sont entourées par au moins 3 foyers.
+## Fin de la partie
+La partie se termine lorsqu’il ne reste plus aucun survivant.
+Un message de fin s’affiche et le résultat est visible dans la console.
 
-Déplacement des survivants :
-Les survivants tentent de se rapprocher de la base coûte que coûte !
-Si aucune case vide n’est disponible, le survivant reste sur place et meurt. --> le but des robots est de permettre que tous les survivants soient sauvés !
+---
 
-Lorsqu'il ne reste plus aucun survivant sur le plateau de jeu, un popup "Partie terminée, bravo !" s'affiche et le résultat apparaît dans la console.
+## Installation et lancement
+
+1. Télécharger le projet
+2. Ouvrir le fichier `grille_visualisation.html` dans un navigateur web
+
+Aucune installation supplémentaire n’est nécessaire.
+
+---
+
+## Technologies utilisées
+- HTML
+- CSS
+- JavaScript
