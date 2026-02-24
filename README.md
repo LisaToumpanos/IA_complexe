@@ -63,5 +63,4 @@ Aucune installation supplémentaire n’est nécessaire.
 
 ## Technologies utilisées
 - HTML
-- CSS
 - JavaScript
